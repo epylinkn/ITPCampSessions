@@ -17,6 +17,8 @@ var nfinished;
 
 var fontCabinSketchRegular, fontCabinSketchBold;
 
+var currentday;
+
 function preload(){
 	fontCabinSketchRegular = loadFont("assets/Cabin_Sketch/CabinSketch-Regular.ttf");
 	fontCabinSketchBold = loadFont("assets/Cabin_Sketch/CabinSketch-Bold.ttf");
@@ -26,6 +28,7 @@ function setup(){
 	createCanvas(windowWidth,windowHeight);
 	todaySessions = [];
 	lastupdated = millis();
+	currentday = day();
 	url = 'https://itp.nyu.edu/camp2017/api/sessions_OfqSntpCAW.json';
 //	url = 'sessions.json';
 	reloadJSON();
@@ -40,6 +43,7 @@ function setup(){
 	offset  = 0;
 
 	nfinished = 0;
+
 
 
 }
@@ -268,6 +272,12 @@ function loadData(data){
 	console.log("Loading data");
 	var el;
 	nfinished = 0;
+	// New day!
+	if(day() != currentday){
+		currentday = day();
+		todaySessions = [];
+	}
+
 	for(i in data){
 		el = data[i];
 		var session = [];
