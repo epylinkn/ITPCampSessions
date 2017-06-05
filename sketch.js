@@ -192,7 +192,7 @@ function draw(){
 
 		var session2;
 		var dif,mag;
-		var rep = 4000;
+		var rep = 6000;
 		for(j in todaySessions){
 			if(i!=j){
 				session2 = todaySessions[j];
