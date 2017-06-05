@@ -26,7 +26,7 @@ function setup(){
 	createCanvas(windowWidth,windowHeight);
 	todaySessions = [];
 	lastupdated = millis();
-	url = 'http://itp.nyu.edu/camp2017/api/sessions_OfqSntpCAW.json';
+	url = 'https://itp.nyu.edu/camp2017/api/sessions_OfqSntpCAW.json';
 //	url = 'sessions.json';
 	reloadJSON();
 
