@@ -26,7 +26,7 @@ function setup(){
 	createCanvas(windowWidth,windowHeight);
 	todaySessions = [];
 	lastupdated = millis();
-	url = 'https://itp.nyu.edu/camp2017/api/sessions_OfqSntpCAW.json';
+	url = 'http://itp.nyu.edu/camp2017/api/sessions_OfqSntpCAW.json';
 //	url = 'sessions.json';
 	reloadJSON();
 
@@ -358,8 +358,8 @@ function loadData(data){
 }
 
 function getNowMinutes(){
-//	return hour()*60 + minute();
-	return (18)*60 + minute();
+	return hour()*60 + minute();
+//	return (18)*60 + minute();
 }
 
 function hasId(s, id){
