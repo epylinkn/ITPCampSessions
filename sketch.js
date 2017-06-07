@@ -401,3 +401,6 @@ function isDay(tokens, year, month, day){
 
 }
 
+function windowResized(){
+	resizeCanvas(windowWidth,windowHeight);
+}
