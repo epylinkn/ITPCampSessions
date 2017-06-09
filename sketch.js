@@ -105,19 +105,19 @@ function draw(){
 				var timedif = session.startMinutesDay - getNowMinutes();
 
 				var timestr;
-				
+
 				if(timedif >= 60){
 
 					c = cwhite;
 					timestr = floor(timedif/60) + " h ";
-					
+
 					if(timedif%60 > 0){
 						timestr+= (timedif%60) + " min";
 					}
 				}
 				else{
 					c = cyellow;
-					timestr = timedif + " min";	
+					timestr = timedif + " min";
 				}
 
 				statustext = "Starting in "+timestr;
@@ -246,8 +246,8 @@ function draw(){
 	if(frameCount%120 == 0){
 		offset = (offset+1)%(todaySessions.length-nfinished);
 	}
-	
-	// Update 
+
+	// Update
 	if(millis()-lastupdated>1000*60){
 		console.log("reloading");
 		reloadJSON();
@@ -281,7 +281,7 @@ function loadData(data){
 	for(i in data){
 		el = data[i];
 		var session = [];
-		if(el.status === "live" && el.enabled === "1"){
+		if(el.status === "live" && el.enabled === "1" && el.rsvps.length>0){
 			var tokens = dateTokens(el.datetime_start);
 			if(isDay(tokens,year(),month(),day())){
 				session.id = el.id;
@@ -307,7 +307,7 @@ function loadData(data){
 				session.endHour = int(tokens[3]);
 				session.endMinute = int(tokens[4]);
 
-				var nowMinutes = getNowMinutes(); 
+				var nowMinutes = getNowMinutes();
 				session.startMinutesDay = session.startHour*60 + session.startMinute;
 				session.endMinutesDay = session.endHour*60 + session.endMinute;
 
