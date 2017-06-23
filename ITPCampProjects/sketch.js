@@ -36,8 +36,8 @@ function setup(){
 	projects = [];
 	lastupdated = millis();
 	currentday = day();
-//	url = 'https://itp.nyu.edu/camp2017/api/projects_OfqSntpCAW.json';
-	url = 'projects.json';
+	url = 'https://itp.nyu.edu/camp2017/api/projects_OfqSntpCAW.json';
+//	url = 'projects.json';
 	reloadJSON();
 
 	t = 0;
