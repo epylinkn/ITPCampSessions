@@ -72,7 +72,7 @@ function draw(){
 	text("ITP Camp Projects",20,100);
 
 	textSize(20);
-	text("Explore the projects with the mouse\nClick to see their page",20,140);
+	text("Explore the projects with the mouse\nClick to see their page\n(Enable pop-ups for this page)",20,140);
 
 	var A,B,phase,freq,x,y,d;
 	var title,description,hover,alpha,enabled,c;
