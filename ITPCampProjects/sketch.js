@@ -105,6 +105,8 @@ function draw(){
 			fill(255,255,255,alpha);
 			text(title,d/2,-d/2, width-x-100, 100);
 
+			projects[enabledi].enabled = false;
+
 			if(withinDist && mouseIsClicked){
 				window.open("https://itp.nyu.edu/camp2017/project/"+id);
 				mouseIsClicked = false;
