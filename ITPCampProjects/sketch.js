@@ -89,6 +89,7 @@ function draw(){
 		enabled = projects[i].enabled;
 		c = projects[i].color;
 		id = projects[i].id;
+		// Calculate position
 		x = A*cos(t*freq + phase) + width/2;
 		y = B*sin(t*freq + phase) + height/2;
 
