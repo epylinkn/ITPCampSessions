@@ -163,7 +163,8 @@ function loadData(data){
 	for(i in data){
 		el = data[i];
 		var project = [];
-		if(el.enabled === "1" && el.final_show === "1"){
+		//if(el.enabled === "1" && el.final_show === "1"){
+		if(el.enabled === "1"){
 			project.id = el.id;
 			project.name = el.name;
 			project.description = el.description;
