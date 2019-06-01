@@ -29,8 +29,7 @@ function setup(){
 	todaySessions = [];
 	lastupdated = millis();
 	currentday = day();
-	url = 'https://itp.nyu.edu/camp2017/api/sessions_OfqSntpCAW.json';
-//	url = 'sessions.json';
+  url = 'https://anachronauts.com/itp-camp-sessions'
 	reloadJSON();
 
 	t = 0;
