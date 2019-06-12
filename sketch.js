@@ -12,9 +12,6 @@ var cgreen;
 var cyellow;
 var cwhite;
 
-var offset;
-var nfinished;
-
 var fontCabinSketchRegular, fontCabinSketchBold;
 
 var currentday;
@@ -38,16 +35,17 @@ function setup(){
 	cyellow = color(235,172,31);
 	cwhite = color(249,249,244);
 	cgray = color(52);
-
-	offset  = 0;
-
-	nfinished = 0;
-
-
-
 }
 
 function draw(){
+  var session;
+  var x, y;
+  var tSize = 16;
+  var rwidth = 300;
+  var rheight = 150;
+  var i;
+  var b;
+
 	background(cgray);
 
 	fill(cwhite);
@@ -56,24 +54,40 @@ function draw(){
 	textFont(fontCabinSketchRegular);
 	text("Today's Sessions!",20,100);
 
+	for(let i = 0; i < todaySessions.length; i++){
+		session = todaySessions[i];
+    session.timeDiff = session.startMinutesDay - getNowMinutes();
 
+    switch(session.status) {
+    case "happening":
+      session.statusIndex = 0;
+      break;
+    case "notstarted":
+      session.statusIndex = 1;
+      break;
+    case "finished":
+      session.statusIndex = 2;
+      break;
+    }
+  }
+  // sort closest to actual time last so it's on top of canvas...
+	todaySessions.sort(function(a,b) {
+    if (a.timeDiff == b.timeDiff) { return 0 }
+    if (a.timeDiff < b.timeDiff) {
+      return 1;
+    } else {
+      return -1;
+    }
+	})
+  // sort finished last...
+  todaySessions.sort(function(a,b) {
+    if (a.statusIndex == b.statusIndex) return 0;
 
-	var session;
-	var x, y;
-	var tSize = 16;
-	var rwidth = 300;
-	var rheight = 150;
+    return (a.statusIndex < b.statusIndex) ? 1 : -1;
+  })
+
 	strokeWeight(5);
-	var i;
-	var b;
-	for(a in todaySessions){
-		if(a<nfinished){
-			i = a;
-		}
-		else{
-			b = a-nfinished;
-			i = nfinished + (b+offset)%(todaySessions.length-nfinished);
-		}
+	for(let i = 0; i < todaySessions.length; i++){
 		session = todaySessions[i];
 		x = session.pos.x;
 		y = session.pos.y;
@@ -101,22 +115,21 @@ function draw(){
 			case "notstarted":
 				tc = cwhite;
 
-				var timedif = session.startMinutesDay - getNowMinutes();
 
 				var timestr;
 
-				if(timedif >= 60){
+				if(session.timeDiff >= 60){
 
 					c = cwhite;
-					timestr = floor(timedif/60) + " h ";
+					timestr = floor(session.timeDiff/60) + " h ";
 
-					if(timedif%60 > 0){
-						timestr+= (timedif%60) + " min";
+					if(session.timeDiff%60 > 0){
+						timestr+= (session.timeDiff%60) + " min";
 					}
 				}
 				else{
 					c = cyellow;
-					timestr = timedif + " min";
+					timestr = session.timeDiff + " min";
 				}
 
 				statustext = "Starting in "+timestr;
@@ -208,11 +221,8 @@ function draw(){
 					dif.mult(0.1);
 				}
 				force.add(dif);
-
 			}
 		}
-
-
 
 		session.acc.set(force);
 		session.vel.add(session.acc);
@@ -221,30 +231,13 @@ function draw(){
 		session.vel.x = constrain(session.vel.x,-maxvel,maxvel);
 		session.vel.y = constrain(session.vel.y,-maxvel,maxvel);
 
-
 		session.pos.add(session.vel);
 
 		session.pos.x = constrain(session.pos.x,0,width-rwidth);
 		session.pos.y = constrain(session.pos.y,rheight,height-rheight);
-
-		/*
-		if(session.pos.y>height-rheight){
-			session.vel.y *= -1;
-		}
-		*/
-
-
-
-
-
-
 	}
 
 	t+=0.001;
-
-	if(frameCount%120 == 0){
-		offset = (offset+1)%(todaySessions.length-nfinished);
-	}
 
 	// Update
 	if(millis()-lastupdated>1000*60){
@@ -252,8 +245,6 @@ function draw(){
 		reloadJSON();
 		lastupdated = millis();
 	}
-
-
 }
 
 function twoZeroPad(n){
@@ -270,7 +261,6 @@ function reloadJSON(){
 function loadData(data){
 	console.log("Loading data");
 	var el;
-	nfinished = 0;
 	// New day!
 	if(day() != currentday){
 		currentday = day();
@@ -320,7 +310,6 @@ function loadData(data){
 				}
 				else{
 					session.status = "finished";
-					nfinished++;
 				}
 
 
@@ -351,19 +340,7 @@ function loadData(data){
 	}
 
 
-	// Sorting
-	todaySessions.sort(function(a,b){
-		if(a.status === b.status || a.status != "finished"){
-			return a.startMinutesDay -  b.startMinutesDay;
-		}
-		else{
-			return -1;
-		}
-	});
-
-
 	console.log(todaySessions);
-	console.log("Nfinished "+nfinished);
 }
 
 function getNowMinutes(){
